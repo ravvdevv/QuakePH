@@ -93,11 +93,10 @@ const Index = () => {
     }
   }, [earthquakesError]);
 
-  const allEarthquakes = filteredEarthquakes || earthquakesData?.data || [];
-  const mapEarthquakes = allEarthquakes.slice(0, 15); // Limit map markers to 15
+  const allEarthquakes = filteredEarthquakes !== null ? filteredEarthquakes : earthquakesData?.data || [];
+  const mapEarthquakes = allEarthquakes.slice(0, 30); // Limit map markers to 15
   const stats = statsData?.data;
-  const isLoading = isLoadingEarthquakes || isLoadingStats;
-
+  const isLoading = isLoadingEarthquakes || isLoadingStats
   return (
     <div className="flex h-screen flex-col bg-background">
       <Header
@@ -110,7 +109,7 @@ const Index = () => {
         <div className="grid h-full gap-4 lg:grid-cols-4">
           {/* Left Panel - Stats and Filters */}
           <div className="flex flex-col gap-4 overflow-y-auto lg:col-span-1">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+            <div className="grid gap-4 sm:grid-cols-2">
               <StatsCard
                 title="Total Earthquakes"
                 value={stats?.total_count || 0}
@@ -143,29 +142,53 @@ const Index = () => {
           </div>
 
           {/* Center - Map */}
-          <div className="h-[400px] lg:col-span-2 lg:h-full">
+          <div className="h-[400px] lg:col-span-2 lg:h-full relative">
             <EarthquakeMap
               earthquakes={mapEarthquakes}
               onEarthquakeClick={handleEarthquakeClick}
             />
+            {/* Magnitude Legend */}
+            <div className="absolute top-4 right-4 z-[1000] rounded-xl bg-card/95 p-4 backdrop-blur-md border border-border shadow-xl">
+              <p className="text-xs font-semibold text-foreground mb-3 uppercase tracking-wide">Magnitude Scale</p>
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-3">
+                  <span className="h-4 w-4 rounded-full bg-magnitude-high shadow-sm ring-2 ring-magnitude-high/30" />
+                  <span className="text-xs font-medium text-foreground">5.0+ Strong</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="h-3.5 w-3.5 rounded-full bg-magnitude-medium shadow-sm ring-2 ring-magnitude-medium/30" />
+                  <span className="text-xs font-medium text-foreground">3.0 - 4.9 Moderate</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="h-3 w-3 rounded-full bg-magnitude-low shadow-sm ring-2 ring-magnitude-low/30" />
+                  <span className="text-xs font-medium text-foreground">&lt; 3.0 Light</span>
+                </div>
+              </div>
+              <div className="mt-3 pt-3 border-t border-border">
+                <p className="text-[10px] text-muted-foreground">Showing {mapEarthquakes.length} recent events</p>
+              </div>
+            </div>
           </div>
 
-          {/* Right Panel - Earthquake Lists */}
-          <div className="flex flex-col gap-4 lg:col-span-1">
-            <div className="h-[300px] lg:h-1/2">
-              <EarthquakeList
-                earthquakes={recentData?.data || []}
-                title="Recent Earthquakes"
-                onEarthquakeClick={handleEarthquakeClick}
-              />
-            </div>
-            <div className="h-[300px] lg:h-1/2">
-              <EarthquakeList
-                earthquakes={topData?.data || []}
-                title="Top by Magnitude"
-                onEarthquakeClick={handleEarthquakeClick}
-              />
-            </div>
+        {/* Right Panel - Earthquake Lists */}
+<div className="flex flex-col lg:col-span-1 gap-4">
+  <div className="h-[300px] lg:h-1/2 overflow-y-auto rounded-md border border-border scrollbar">
+    <EarthquakeList
+      earthquakes={(topData?.data || []).slice(0, 5)}
+      title="Top by Magnitude"
+      onEarthquakeClick={handleEarthquakeClick}
+    />
+  </div>
+  <div className="h-[300px] lg:h-1/2 overflow-y-auto rounded-md border border-border scrollbar">
+    <div className="h-[300px] lg:h-1/2 overflow-y-auto rounded-md border border-border scrollbar">
+    <EarthquakeList
+      earthquakes={(recentData?.data || []).slice(0, 3)}
+      title="Recent Earthquakes"
+      onEarthquakeClick={handleEarthquakeClick}
+    />
+    </div>
+  </div>
+
           </div>
         </div>
       </main>
