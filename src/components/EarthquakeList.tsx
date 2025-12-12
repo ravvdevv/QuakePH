@@ -15,9 +15,6 @@ const EarthquakeList = ({ earthquakes, title, onEarthquakeClick }: EarthquakeLis
     return "secondary";
   };
 
-  // Minimum touch target height for mobile accessibility
-  const MIN_TOUCH_HEIGHT = "80px";
-
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
       <div className="border-b border-border bg-muted/50 px-3 md:px-4 py-2.5 md:py-3 sticky top-0 z-10">
@@ -34,7 +31,7 @@ const EarthquakeList = ({ earthquakes, title, onEarthquakeClick }: EarthquakeLis
               <div
                 key={`${eq.date}-${eq.time}-${index}`}
                 className="cursor-pointer p-3 md:p-4 transition-colors hover:bg-muted/50 active:bg-muted md:min-h-0"
-                style={{ minHeight: `min(${MIN_TOUCH_HEIGHT}, 100%)` }}
+                style={{ minHeight: 'min(var(--min-touch-target, 44px), 100%)' }}
                 onClick={() => onEarthquakeClick?.(eq)}
               >
                 <div className="flex items-start justify-between gap-2 md:gap-3">
