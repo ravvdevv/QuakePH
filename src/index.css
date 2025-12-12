@@ -166,13 +166,13 @@ All colors MUST be HSL.
   }
   
   /* Ensure minimum touch target size on interactive elements */
-  button, a, input, select, textarea {
-    min-height: 44px;
-  }
-  
-  @media (min-width: 768px) {
-    button, a, input, select, textarea {
-      min-height: auto;
+  @media (max-width: 767px) {
+    button:not(.inline-button), 
+    a:not(.inline-link), 
+    input:not([type="checkbox"]):not([type="radio"]), 
+    select, 
+    textarea {
+      min-height: 44px;
     }
   }
 }
