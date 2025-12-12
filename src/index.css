@@ -35,6 +35,11 @@
   .scrollbar::-webkit-scrollbar-corner {
     background: transparent;
   }
+  
+  /* Mobile touch target utility */
+  .touch-target {
+    min-height: var(--min-touch-target, 44px);
+  }
 }
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 

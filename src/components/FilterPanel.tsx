@@ -74,7 +74,7 @@ const FilterPanel = ({ onFilter, onClear }: FilterPanelProps) => {
                 />
               </div>
 
-              <Button onClick={handleApply} className="w-full min-h-[44px]">
+              <Button onClick={handleApply} className="w-full" style={{ minHeight: 'var(--min-touch-target, 44px)' }}>
                 Apply Filters
               </Button>
             </div>

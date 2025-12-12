@@ -39,7 +39,8 @@ const Header = ({
             size="sm" 
             onClick={onRefresh} 
             disabled={isLoading}
-            className="min-h-[44px] md:min-h-0"
+            style={{ minHeight: 'var(--min-touch-target, 44px)' }}
+            className="md:min-h-0"
           >
             <RefreshCw className={`h-4 w-4 md:mr-2 ${isLoading ? "animate-spin" : ""}`} />
             <span className="hidden md:inline">Refresh</span>

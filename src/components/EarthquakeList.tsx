@@ -30,8 +30,7 @@ const EarthquakeList = ({ earthquakes, title, onEarthquakeClick }: EarthquakeLis
             {earthquakes.map((eq, index) => (
               <div
                 key={`${eq.date}-${eq.time}-${index}`}
-                className="cursor-pointer p-3 md:p-4 transition-colors hover:bg-muted/50 active:bg-muted md:min-h-0"
-                style={{ minHeight: 'min(var(--min-touch-target, 44px), 100%)' }}
+                className="cursor-pointer p-3 md:p-4 transition-colors hover:bg-muted/50 active:bg-muted touch-target md:min-h-0"
                 onClick={() => onEarthquakeClick?.(eq)}
               >
                 <div className="flex items-start justify-between gap-2 md:gap-3">
