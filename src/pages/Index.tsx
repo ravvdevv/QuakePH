@@ -105,8 +105,8 @@ const Index = () => {
         lastUpdate={earthquakesData?.meta.timestamp}
       />
 
-      <main className="flex-1 overflow-hidden p-4">
-        <div className="grid h-full gap-4 lg:grid-cols-4">
+      <main className="flex-1 p-4 ">
+        <div className="grid h-full gap-4 lg:grid-cols-4 scrollbar ">
           {/* Left Panel - Stats and Filters */}
           <div className="flex flex-col gap-4 overflow-y-auto lg:col-span-1">
             <div className="grid gap-4 sm:grid-cols-2">
