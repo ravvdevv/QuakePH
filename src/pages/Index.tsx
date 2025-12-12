@@ -106,7 +106,7 @@ const Index = () => {
       />
 
       <main className="flex-1 p-4 ">
-        <div className="grid h-full gap-4 lg:grid-cols-4 scrollbar ">
+        <div className="grid h-full gap-4 lg:grid-cols-4 ">
           {/* Left Panel - Stats and Filters */}
           <div className="flex flex-col gap-4 overflow-y-auto lg:col-span-1">
             <div className="grid gap-4 sm:grid-cols-2">
