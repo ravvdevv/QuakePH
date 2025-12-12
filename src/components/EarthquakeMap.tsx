@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Earthquake, parseCoordinate, getMagnitudeColor } from "@/lib/api";
@@ -12,8 +12,28 @@ const EarthquakeMap = ({ earthquakes, onEarthquakeClick }: EarthquakeMapProps) =
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
   const markersRef = useRef<L.Marker[]>([]);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isOnline) {
+      map.current?.remove();
+      map.current = null;
+      return;
+    }
+
     if (!mapContainer.current || map.current) return;
 
     map.current = L.map(mapContainer.current, {
@@ -32,7 +52,7 @@ const EarthquakeMap = ({ earthquakes, onEarthquakeClick }: EarthquakeMapProps) =
       map.current?.remove();
       map.current = null;
     };
-  }, []);
+  }, [isOnline]);
 
   useEffect(() => {
     if (!map.current || !earthquakes.length) return;
@@ -85,6 +105,14 @@ const EarthquakeMap = ({ earthquakes, onEarthquakeClick }: EarthquakeMapProps) =
       markersRef.current.push(marker);
     });
   }, [earthquakes, onEarthquakeClick]);
+
+  if (!isOnline) {
+    return (
+      <div className="relative flex h-full w-full items-center justify-center rounded-lg bg-muted text-muted-foreground">
+        <p className="text-center">Map is unavailable. Please check your internet connection.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-lg">
@@ -166,28 +194,6 @@ const EarthquakeMap = ({ earthquakes, onEarthquakeClick }: EarthquakeMapProps) =
       
       <div ref={mapContainer} className="absolute inset-0" />
       <div className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-border" />
-      
-      {/* Magnitude Legend */}
-      <div className="absolute bottom-4 left-4 z-[1000] rounded-xl bg-card/95 p-4 backdrop-blur-md border border-border shadow-xl">
-        <p className="text-xs font-semibold text-foreground mb-3 uppercase tracking-wide">Magnitude Scale</p>
-        <div className="space-y-2.5">
-          <div className="flex items-center gap-3">
-            <span className="h-4 w-4 rounded-full bg-magnitude-high shadow-sm ring-2 ring-magnitude-high/30" />
-            <span className="text-xs font-medium text-foreground">5.0+ Strong</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="h-3.5 w-3.5 rounded-full bg-magnitude-medium shadow-sm ring-2 ring-magnitude-medium/30" />
-            <span className="text-xs font-medium text-foreground">3.0 - 4.9 Moderate</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="h-3 w-3 rounded-full bg-magnitude-low shadow-sm ring-2 ring-magnitude-low/30" />
-            <span className="text-xs font-medium text-foreground">&lt; 3.0 Light</span>
-          </div>
-        </div>
-        <div className="mt-3 pt-3 border-t border-border">
-          <p className="text-[10px] text-muted-foreground">Showing {earthquakes.length} recent events</p>
-        </div>
-      </div>
     </div>
   );
 };
