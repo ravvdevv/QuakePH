@@ -25,15 +25,15 @@ const StatsCard = ({ title, value, subtitle, icon: Icon, variant = "default" }: 
   };
 
   return (
-    <Card className={`${variantStyles[variant]} transition-all hover:scale-[1.02]`}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-card-foreground">{title}</CardTitle>
-        <Icon className={`h-4 w-4 ${iconStyles[variant]}`} />
+    <Card className={`${variantStyles[variant]} transition-all hover:scale-[1.02] active:scale-[0.98]`}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3 md:px-6 pt-3 md:pt-6">
+        <CardTitle className="text-xs md:text-sm font-medium text-card-foreground line-clamp-2">{title}</CardTitle>
+        <Icon className={`h-4 w-4 flex-shrink-0 ${iconStyles[variant]}`} />
       </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold text-card-foreground">{value}</div>
+      <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+        <div className="text-xl md:text-2xl font-bold text-card-foreground truncate">{value}</div>
         {subtitle && (
-          <p className="text-xs text-muted-foreground">{subtitle}</p>
+          <p className="text-[10px] md:text-xs text-muted-foreground line-clamp-1 mt-1">{subtitle}</p>
         )}
       </CardContent>
     </Card>
