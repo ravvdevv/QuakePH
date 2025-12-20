@@ -99,7 +99,7 @@ const Index = () => {
   const isLoading = isLoadingEarthquakes || isLoadingStats;
   
   return (
-    <div className="flex h-screen flex-col bg-background">
+    <div className="flex h-screen flex-col bg-background w-full">
       <Header
         onRefresh={handleRefresh}
         isLoading={isLoading}
